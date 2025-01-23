@@ -81,12 +81,24 @@
                 bottom: 20px;
                 right: 20px;
             }
+            #popup-modal .bg-white {
+                margin-top: 60px; /* Ensure it does not go over the navbar */
+            }
+            iframe {
+                height: calc(100vh - 62px); /* Adjust height with 2px padding over the screen width */
+            }
         }
         @media (min-width: 769px) {
             .close-button {
                 position: absolute;
                 top: 10px;
                 right: 10px;
+            }
+            #popup-modal .bg-white {
+                margin-top: 0; /* Reset margin for desktop view */
+            }
+            iframe {
+                height: 1500px; /* Reset height for desktop view */
             }
         }
 
@@ -231,7 +243,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeokrUIFWEWHJnvIkY1zIMzCLOufWi8BrRMJnHZZLG6gGHDMw/viewform?embedded=true" width="100%" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeokrUIFWEWHJnvIkY1zIMzCLOufWi8BrRMJnHZZLG6gGHDMw/viewform?embedded=true" width="100%" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
                       </div>
                     </div>
                 </div>
