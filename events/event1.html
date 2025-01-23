@@ -60,6 +60,10 @@
             }
         }
 
+        .hidden-navbar {
+            display: none;
+        }
+
     </style>
 </head>
 <body class="text-gray-200">
@@ -213,10 +217,16 @@
         // POPUP MODEL SCRIPT
         document.getElementById("register-button").addEventListener("click", function() {
             document.getElementById("popup-modal").classList.remove("hidden");
+            if (window.innerWidth <= 768) {
+                document.getElementById("navbar-sticky").classList.add("hidden-navbar");
+            }
         });
 
         document.getElementById("close-popup").addEventListener("click", function() {
            document.getElementById("popup-modal").classList.add("hidden");
+           if (window.innerWidth <= 768) {
+               document.getElementById("navbar-sticky").classList.remove("hidden-navbar");
+           }
         });
         // Set the date when registration closes (e.g., January 14, 2025, 11:59 PM)
         const registrationEnd = new Date("March 14, 2025 23:59:00").getTime();
