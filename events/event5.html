@@ -39,15 +39,16 @@
 
         /* Neon text and buttons */
         .neon {
-            text-shadow: 0 0 5px #00FFCA, 0 0 10px #00FFCA, 0 0 20px #00FFCA;
+            text-shadow: 0 0 5px #007BFF, 0 0 10px #007BFF, 0 0 2px #140083;
         }
+        
         .neon-button {
-            border: 2px solid #00FFCA;
-            box-shadow: 0 0 10px #00FFCA, 0 0 20px #00FFCA;
+            border: 1px solid #ffffff;
+            box-shadow: 0 0 5px #a1b3c7, 0 0 4px #a1b3c7;
         }
         .neon-button:hover {
-            box-shadow: 0 0 20px #FF3C78, 0 0 40px #FF3C78;
-            border-color: #FF3C78;
+          box-shadow: 0 0 20px #001bb3, 0 0 40px #001bb3;
+          border-color: #001bb3;
         }
 
         /* Responsive adjustments */
@@ -60,13 +61,86 @@
             }
         }
 
+        .hidden-navbar {
+            display: none;
+        }
+
+        .close-button {
+            background-color: #1E90FF; /* Blue color */
+            border-radius: 50%;
+            padding: 10px;
+            display: none; /* Initially hidden */
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out;
+        }
+        .close-button:hover {
+            transform: rotate(90deg);
+        }
+        @media (max-width: 768px) {
+            .close-button {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+            }
+            #popup-modal .bg-white {
+                margin-top: 60px; /* Ensure it does not go over the navbar */
+            }
+            iframe {
+                height: calc(100vh - 62px); /* Adjust height with 2px padding over the screen width */
+                overflow: hidden; /* Remove iframe scrollbar */
+            }
+            .button-container {
+                flex-direction: column;
+                align-items: center; /* Center align buttons */
+            }
+            .neon-button {
+                width: 100%; /* Make buttons full width in mobile view */
+                margin-bottom: 10px; /* Add margin between buttons */
+            }
+        }
+        @media (min-width: 769px) {
+            .close-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+            #popup-modal .bg-white {
+                margin-top: 0; /* Reset margin for desktop view */
+            }
+            iframe {
+                height: 1500px; /* Reset height for desktop view */
+            }
+            .button-container {
+                flex-direction: row;
+                justify-content: center; /* Center align buttons */
+            }
+            .neon-button {
+                width: 300px; /* Increase width for both buttons */
+                margin-bottom: 0; /* Reset margin for desktop view */
+            }
+        }
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
     </style>
 </head>
 <body class="text-gray-200">
 
     <!-- Background Video -->
     <video id="bg-video" autoplay muted loop>
-        <source src="../assets/cover.mp4" type="video/mp4">
+        <source src="../assets/bgloop/loop2.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     <div class="overlay"></div>
@@ -92,6 +166,7 @@
                     Login
                   </button>
                 </a>
+                
           
                 <button
                   data-collapse-toggle="navbar-sticky"
@@ -176,32 +251,59 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Left side: Image -->
                 <div>
-                    <img src="../assets/brain.avif" alt="Event Cover" class="w-full rounded-lg mb-6">
+                    <img src="../assets/coverpic/gaming.png" alt="Event Cover" class="w-full rounded-lg mb-6">
                 </div>
                 <!-- Right side: Event Details -->
                 <div class="flex flex-col justify-center">
-                    <h2 class="text-5xl md:text-4xl font-bold neon mb-4">Event Name</h2>
-                    <p class="text-gray-400 mb-6">This is a brief description of the event. It provides an overview of what attendees can expect, giving details about the event's significance.</p>
-                    <ul class="list-disc text-left text-gray-300 mb-6 pl-5">
-                        <li>Instructions: Arrive 30 minutes early.</li>
-                        <li>Bring your event ticket.</li>
-                        <li>Follow the safety guidelines.</li>
-                    </ul>
-                    
+                    <h2 class="text-5xl md:text-4xl font-bold neon mb-4">XYTRON V1.0</h2>
+                    <p class="text-gray-400 mb-6">Showcase your gaming skills in an electrifying showdown of tactical battles, rapid reflexes, and strategic brilliance. Compete to emerge as the ultimate champion in this high-stakes gaming arena.</p>
+                  
                     <!-- Registration Closing Timer -->
                     <div id="countdown" class="timer text-xl font-bold neon mb-4 p-4 rounded-lg bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-700 text-white text-transparent bg-clip-text shadow-xl animate-pulse"></div>
     
-                    <button class="neon-button text-lg font-bold py-2 px-6 rounded transition transform hover:scale-105 mt-4" id="register-button">
-                        Register Now
-                    </button>
+                    <div class="flex button-container space-x-4">
+                        <button class="neon-button text-lg font-bold py-2 px-6 rounded transition transform hover:scale-105 mt-4" id="register-button">
+                            Register Now
+                        </button>
+                        <button class="neon-button text-lg font-bold py-2 px-6 rounded transition transform hover:scale-105 mt-4" id="guidelines-button">
+                            Guidelines
+                        </button>
+                    </div>
+                    <!-- Popup Modal -->
+                    <div id="popup-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden p-4">
+                      <div class="bg-white p-8 rounded-2xl shadow-lg text-black relative max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+                        <button type="button" id="close-popup" class="close-button">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeokrUIFWEWHJnvIkY1zIMzCLOufWi8BrRMJnHZZLG6gGHDMw/viewform?embedded=true" width="100%" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                      </div>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 
     <script>
+        // POPUP MODEL SCRIPT
+        document.getElementById("register-button").addEventListener("click", function() {
+            document.getElementById("popup-modal").classList.remove("hidden");
+            document.getElementById("close-popup").style.display = "block";
+            if (window.innerWidth <= 768) {
+                document.getElementById("navbar-sticky").classList.add("hidden-navbar");
+            }
+        });
+
+        document.getElementById("close-popup").addEventListener("click", function() {
+           document.getElementById("popup-modal").classList.add("hidden");
+           document.getElementById("close-popup").style.display = "none";
+           if (window.innerWidth <= 768) {
+               document.getElementById("navbar-sticky").classList.remove("hidden-navbar");
+           }
+        });
         // Set the date when registration closes (e.g., January 14, 2025, 11:59 PM)
-        const registrationEnd = new Date("January 14, 2025 23:59:00").getTime();
+        const registrationEnd = new Date("March 14, 2025 23:59:00").getTime();
 
         // Function to update the countdown timer
         function updateTimer() {
@@ -225,5 +327,6 @@
         setInterval(updateTimer, 1000);
     </script>
     <script src="../script.js"></script>
+    <script src="../mouse.js"></script>
 </body>
 </html>
