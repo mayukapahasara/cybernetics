@@ -97,4 +97,3 @@ function openModal(cardNumber) {
     modal.classList.add('hidden');
   }
   
-
